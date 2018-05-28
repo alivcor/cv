@@ -144,7 +144,7 @@ Mat gaussian_convolution(bool custom, bool visualize, Mat image, int W=5, double
         return filtered_image;
     } else {
         Mat filtered_image_gaussian;
-        GaussianBlur(image, filtered_image_gaussian, Size(W, W), 0, 0);
+        GaussianBlur(image, filtered_image_gaussian, Size(W, W), sigma, sigma);
         if(visualize){
             display_adjacent(image, filtered_image_gaussian);
         }
@@ -194,7 +194,7 @@ int main() {
 
     cout << "Upsampling the image to twice its size .." << endl;
 
-    pyrUp(antialiased_image, scale_space[0][0], Size( antialiased_image.cols*2, antialiased_image.rows*2 ));
+    pyrUp(antialiased_image, scale_space[0][0], Size(antialiased_image.cols*2, antialiased_image.rows*2));
 
     cout << "Preblurring the base image .." << endl;
 
@@ -212,8 +212,8 @@ int main() {
         }
         for(int j = 0; j < NUM_SCALES-1; j++){
             cout << "\tBlur Level : " << j << endl;
-            scale_space[j+1][i-1] = gaussian_convolution(0, 0, scale_space[j][i-1]);
-            cout << "\t\t Generating " << j+1 << "," << i-1 << " by blurring " << j << "," << i-1 << endl;
+            scale_space[j+1][i-1] = gaussian_convolution(0, 0, scale_space[j][i-1], 5, sigma_value[j+1][i-1]);
+            cout << "\t\t Generating " << j+1 << "," << i-1 << " by blurring " << j << "," << i-1 << " with sigma = " << sigma_value[j+1][i-1] << endl;
         }
     }
 
